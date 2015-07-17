@@ -1,0 +1,17 @@
+//allprojects {
+//    repositories {
+//        mavenCentral()
+//        maven {
+//            url "http://nexus.dev.mia.ge/nexus/content/groups/public"
+//        }
+//    }
+//    apply plugin: 'idea'
+//    idea {
+//        project {
+////            jdkName = '1.8'
+////            languageLevel = '1.8'
+//        }
+//    }
+
+
+//}

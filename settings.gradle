@@ -1,0 +1,4 @@
+rootProject.name = 'alan-arena'
+
+include 'arena-web'
+include 'turing'

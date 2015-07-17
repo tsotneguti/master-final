@@ -1,0 +1,9 @@
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/TuringMachine.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/executor/Machine.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/tape/Tape.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/executor/Fragment.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/executor/EmpyNotch.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/executor/Notch.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/executor/Command.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/tape/DequeTape.java
+/home/tsotne/IdeaProjects/alan-arena/turing/src/main/java/ge/combal/alan/turing/parser/Parser.java
