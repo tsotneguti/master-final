@@ -42,12 +42,17 @@ Ext.define('AA.view.problems.Problems', {
 
         me.callParent(arguments);
 
+        me.on('afterrender',function(){
+            loadProblems();
+        })
+
         function loadProblems(){
             springRequest({
                 url: 'alan/problems',
                 method: 'POST',
                 data: null,
             }, function (data) {
+                data[0].difficulty = "&#9733;";
                 grid.store.loadData(data);
             }, function () {
                 log("error")

@@ -141,6 +141,7 @@ Ext.define('AA.view.coding.CodePanel', {
         }
 
         me.loadProblem = function (problemId) {
+            return;
             me.setLoading("იტვირთება...");
             prev.disable();
             next.disable();
