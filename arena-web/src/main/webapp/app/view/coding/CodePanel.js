@@ -92,7 +92,6 @@ Ext.define('AA.view.coding.CodePanel', {
         me.callParent(arguments);
 
         function run() {
-
             var values = visualisation.tape.tape.form.getValues();
             var data = [], tape = [];
             var i, j;
@@ -105,7 +104,7 @@ Ext.define('AA.view.coding.CodePanel', {
             for (j = data.length - 1; j >= 0; j--) if (data[j]) break;
             for (; i <= j; i++) tape.push(data[i] ? data[i] : " ");
 
-            var c = code.getValue().split("\n")
+            var c = me.codeDiv.innerText.split("\n");
 
             //for (i in c) c[i] = c[i].replace(/ /g, '');
 
@@ -137,11 +136,12 @@ Ext.define('AA.view.coding.CodePanel', {
             for (j = data.length - 1; j >= 0; j--) if (data[j]) break;
             for (; i <= j; i++) tape.push(data[i] ? data[i] : " ");
 
-            var c = code.getValue().split("\n")
+            var c = me.codeDiv.innerText.split("\n");
+            log(ff = me.codeDiv)
+            Ext.MessageBox.alert("code", c);
         }
 
         me.loadProblem = function (problemId) {
-            return;
             me.setLoading("იტვირთება...");
             prev.disable();
             next.disable();
@@ -230,10 +230,10 @@ Ext.define('AA.view.coding.CodePanel', {
 
         function checkCodeAreaDivEmpty() {
             if (!codeArea.el.dom.childElementCount) {
-                var div = document.createElement("div");
+                me.codeDiv = document.createElement("div");
                 var br = document.createElement("br");
-                div.appendChild(br);
-                codeArea.el.dom.appendChild(div);
+                me.codeDiv.appendChild(br);
+                codeArea.el.dom.appendChild(me.codeDiv);
             }
         }
 
@@ -246,6 +246,36 @@ Ext.define('AA.view.coding.CodePanel', {
             }
             lines.style.top = -(codeArea.el.dom.scrollTop) + "px";
         }
+
+
+        codeArea.on('afterrender', function () {
+            codeArea.el.on({
+                keydown: function () {
+                    setTimeout(highlightCurrentLine, 1)
+                },
+                mouseup: function () {
+                    highlightCurrentLine();
+                }
+            });
+        });
+
+        function highlightCurrentLine() {
+            var sel = document.getSelection(),
+                nd = sel.anchorNode;
+            var currentLine = nd.tagName == 'DIV' ? nd : nd.parentNode;
+            // clear all
+            var ind=0;
+            codeArea.el.query('div').forEach(function (line) {
+                ind++;
+                line.classList.remove('code-current-line');
+            });
+            // highlight current
+            currentLine.classList.add('code-current-line');
+        }
+
+        hcl = highlightCurrentLine;
+
+
     }
 });
 

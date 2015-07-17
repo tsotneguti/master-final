@@ -27,7 +27,7 @@
 }
 
 .visualisation {
-    background-color: rgb(56, 56, 56);
+    background-color: rgb(21, 127, 204);
 }
 
 .problems-grid-row {
@@ -65,29 +65,25 @@ a.solved {
 a.unsolved {
     background-color: rgba(219, 43, 20, 0.83) !important;
 }
-/*
+
 .coding {
     border: 1px dashed;
 }
 
-.coding .codearea {
+.codearea {
     overflow: auto;
-    color: #2E58FF;
 }
 
-.coding .codearea div {
-    padding: 5px;
-    border: 1px solid;
+.codearea div {
+    padding: 3px;
+    padding-left: 6px;
+    border-bottom: 1px solid rgb(230, 230, 253);
 }
 
-
-*/
 .codearea div:focus {
     border: 1px solid rgb(187, 205, 232) !important;
     background-color: #357ae8;
 }
-
-
 
 .coding .container {
     border-right: 1px solid #357ae8;
@@ -101,10 +97,9 @@ a.unsolved {
 .line {
     text-align: right;
     padding-right: 3px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 3px;
+    padding-bottom: 4px;
     color: rgb(145, 145, 145);
-    /*border: 1px solid;*/
 }
 
 .blue-button {
@@ -121,4 +116,16 @@ a.unsolved {
 
 .blue-button:active span {
     color: #666;
+}
+
+.code-current-line {
+    background-color: rgb(233, 241, 245);
+}
+
+.code-error-line {
+
+}
+
+.line-error-sign {
+
 }

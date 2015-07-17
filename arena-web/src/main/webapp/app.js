@@ -55,17 +55,16 @@ Ext.application({
     onUserInfo: function () {
         loadUserInfo();
     },
-    //TODO
-    //listen : {
-    //    controller : {
-    //        '#' : {
-    //            unmatchedroute : 'onUnmatchedRoute'
-    //        }
-    //    }
-    //},
-    //onUnmatchedRoute : function(){
-    //    loadErrorPage();
-    //},
+    listen : {
+        controller : {
+            '#' : {
+                unmatchedroute : 'onUnmatchedRoute'
+            }
+        }
+    },
+    onUnmatchedRoute : function(){
+        loadErrorPage();
+    },
     launch: function () {
 
         AA.mainPanel = Ext.create('AA.view.main.MainPanel');
