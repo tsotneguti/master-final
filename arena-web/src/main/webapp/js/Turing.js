@@ -12,11 +12,12 @@ Turing = (function () {
             return "get";
         },
         parseCommand: function (cmd) {
-            var tmpls = [/^$/,/^\d\d*$/,/^L$/,/^R$/,/^S$/,/^W.$/,/^G\d\d*$/,/^I.\d\d*$/,/^D\d\d*.$/];
-            for(var i in tmpls){
-                if(cmd.match(tmpls[i])) return cmd;
+            cmd = cmd ? cmd.replace(/\s+/g, ' ').trim() : cmd;
+            var tmpls = [/^$/, /^\d\d*$/, /^L$/, /^R$/, /^S$/, /^W.$/, /^G\d\d*$/, /^I.\d\d*$/, /^D\d\d*.$/];
+            for (var i in tmpls) {
+                if (cmd.match(tmpls[i])) return {cmd: cmd, result: "success"};
             }
-            return;
+            return {cmd: null, result: "error"};
         }
     };
     return turing;

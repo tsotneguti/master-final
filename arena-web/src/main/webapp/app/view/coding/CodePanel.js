@@ -63,12 +63,12 @@ Ext.define('AA.view.coding.CodePanel', {
         });
 
         var prev = Ext.create('Ext.button.Button', {
-            text: '&laquo; წინა',
+            text: '&#10096; წინა',
             handler: goToPrev,
             cls: 'blue-button'
         });
         var next = Ext.create('Ext.button.Button', {
-            text: 'შემდეგი &raquo;',
+            text: 'შემდეგი &#10097;',
             handler: goToNext,
             cls: 'blue-button'
         });
@@ -165,10 +165,10 @@ Ext.define('AA.view.coding.CodePanel', {
                     data: (me.problemId - 1) + "",
                 }, function (data) {
                     if (data && data.length) {
-                        prev.setText("&laquo; წინა (" + data[0].name + ")");
+                        prev.setText("&#10096; წინა (" + data[0].name + ")");
                         prev.enable();
                     } else {
-                        prev.setText("&laquo; წინა");
+                        prev.setText("&#10096; წინა");
                     }
                 }, function () {
                     log("error");
@@ -180,10 +180,10 @@ Ext.define('AA.view.coding.CodePanel', {
                     data: +me.problemId + 1,
                 }, function (data) {
                     if (data && data.length) {
-                        next.setText("შემდეგი &raquo; (" + data[0].name + ")");
+                        next.setText("შემდეგი &#10097; (" + data[0].name + ")");
                         next.enable();
                     } else {
-                        next.setText("შემდეგი &raquo;");
+                        next.setText("შემდეგი &#10097;");
                     }
                 }, function () {
                     log("error");
@@ -245,8 +245,11 @@ Ext.define('AA.view.coding.CodePanel', {
                 lines.innerHTML = lines.innerHTML + "<div class='line'>" + i + ":</div>";
             }
             lines.style.top = -(codeArea.el.dom.scrollTop) + "px";
+            highlightCurrentLine();
+            codeArea.el.dom.classList.remove('code-current-line');
         }
 
+        // checking codearea
 
         codeArea.on('afterrender', function () {
             codeArea.el.on({
@@ -264,10 +267,21 @@ Ext.define('AA.view.coding.CodePanel', {
                 nd = sel.anchorNode;
             var currentLine = nd.tagName == 'DIV' ? nd : nd.parentNode;
             // clear all
-            var ind=0;
+            var ind = 0;
             codeArea.el.query('div').forEach(function (line) {
-                ind++;
+                log(ind)
+                if (linesDiv.childNodes[ind]) {
+                    var text = line.innerText;
+                    if (Turing.parseCommand(text).result === "error") {
+                        linesDiv.childNodes[ind].classList.add("line-error-sign");
+                    } else {
+                        linesDiv.childNodes[ind].classList.remove("line-error-sign");
+                    }
+                }
+
                 line.classList.remove('code-current-line');
+
+                ind++;
             });
             // highlight current
             currentLine.classList.add('code-current-line');
