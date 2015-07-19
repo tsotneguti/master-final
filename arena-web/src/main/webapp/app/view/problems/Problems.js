@@ -20,14 +20,14 @@ Ext.define('AA.view.problems.Problems', {
                 {text: 'სირთულე', dataIndex: 'difficulty', flex: 1}
             ],
             viewConfig: {
-                getRowClass: function(rec, rowIdx, params, store) {
+                getRowClass: function (rec, rowIdx, params, store) {
                     //log(rec.get('problemId') == 1 )
                     return "problems-grid-row";
                 }
             },
-            listeners : {
-                itemdblclick : function(dv, record, item, index, e){
-                    document.location.href = "#problem/"+ record.data.problemId;
+            listeners: {
+                itemdblclick: function (dv, record, item, index, e) {
+                    document.location.href = "#problem/" + record.data.problemId;
                 }
             }
         });
@@ -35,24 +35,25 @@ Ext.define('AA.view.problems.Problems', {
         me.items = [grid];
 
         me.tbar = [{
-            text : 'reload',
-            handler : loadProblems,
-            iconCls : 'reload-image'
+            text: 'reload',
+            handler: loadProblems,
+            iconCls: 'reload-image'
         }];
 
         me.callParent(arguments);
 
-        me.on('afterrender',function(){
+        me.on('afterrender', function () {
             loadProblems();
         })
 
-        function loadProblems(){
+        function loadProblems() {
             springRequest({
                 url: 'alan/problems',
                 method: 'POST',
                 data: null,
             }, function (data) {
-                data[0].difficulty = "&#9733;";
+                for (var i in data)
+                    data[i].difficulty = repeatString("&#9733;", data[i].difficulty / 10 + 1) + " / 10 x &#9733;";
                 grid.store.loadData(data);
             }, function () {
                 log("error")

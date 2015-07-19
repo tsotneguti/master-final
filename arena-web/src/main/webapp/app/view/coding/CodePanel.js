@@ -8,6 +8,8 @@ Ext.define('AA.view.coding.CodePanel', {
         cfg = cfg || {};
         var me = this;
 
+        me.errorLines = [];
+
         var codeArea = Ext.create('Ext.Component', {
             autoEl: {
                 tag: 'div',
@@ -28,9 +30,6 @@ Ext.define('AA.view.coding.CodePanel', {
         var linesDiv = document.createElement("div");
         linesDiv.setAttribute('class', 'line-numberer');
 
-        lc = linesContainer;
-        ld = linesDiv;
-        ca = codeArea;
         var code = new Ext.container.Container({
             layout: {
                 type: 'hbox',
@@ -48,8 +47,6 @@ Ext.define('AA.view.coding.CodePanel', {
             collapsible: true,
             title: 'შესრულების ვიზუალიზაცია'
         });
-
-        log(vv = visualisation)
 
         var runBtn = Ext.create('Ext.button.Button', {
             scale: 'small',
@@ -104,7 +101,7 @@ Ext.define('AA.view.coding.CodePanel', {
             for (j = data.length - 1; j >= 0; j--) if (data[j]) break;
             for (; i <= j; i++) tape.push(data[i] ? data[i] : " ");
 
-            var c = me.codeDiv.innerText.split("\n");
+            var c = codeArea.el.dom.innerText.split("\n");
 
             //for (i in c) c[i] = c[i].replace(/ /g, '');
 
@@ -136,9 +133,18 @@ Ext.define('AA.view.coding.CodePanel', {
             for (j = data.length - 1; j >= 0; j--) if (data[j]) break;
             for (; i <= j; i++) tape.push(data[i] ? data[i] : " ");
 
-            var c = me.codeDiv.innerText.split("\n");
-            log(ff = me.codeDiv)
-            Ext.MessageBox.alert("code", c);
+            var c = codeArea.el.dom.innerText.split("\n");
+
+            if (me.errorLines) {
+                Ext.MessageBox.show({
+                    title: 'სინტაქსური შეცდომა',
+                    msg: me.errorLines,
+                    buttons: Ext.MessageBox.OK,
+                    //fn: log,
+                    icon: Ext.MessageBox.ERROR
+                });
+                return;
+            }
         }
 
         me.loadProblem = function (problemId) {
@@ -208,6 +214,7 @@ Ext.define('AA.view.coding.CodePanel', {
         me.on('afterrender', function () {
             linesContainer.el.dom.appendChild(linesDiv);
             codeArea.el.dom.focus();
+
             checkCodeAreaDivEmpty();
             refreshlines();
             var txtArea = codeArea.el.dom;
@@ -268,14 +275,17 @@ Ext.define('AA.view.coding.CodePanel', {
             var currentLine = nd.tagName == 'DIV' ? nd : nd.parentNode;
             // clear all
             var ind = 0;
+            me.errorLines = [];
             codeArea.el.query('div').forEach(function (line) {
-                log(ind)
                 if (linesDiv.childNodes[ind]) {
                     var text = line.innerText;
-                    if (Turing.parseCommand(text).result === "error") {
+                    if (Turing().parseCommand(text).result === "error") {
                         linesDiv.childNodes[ind].classList.add("line-error-sign");
+                        me.errorLines.push(ind);
                     } else {
                         linesDiv.childNodes[ind].classList.remove("line-error-sign");
+                        if (me.errorLines.indexOf(ind) != -1)
+                            me.errorLines.splice(me.errorLines.indexOf(ind), 1);
                     }
                 }
 
@@ -290,6 +300,10 @@ Ext.define('AA.view.coding.CodePanel', {
         hcl = highlightCurrentLine;
 
 
+        lc = linesContainer;
+        ld = linesDiv;
+        ca = codeArea;
+        el = me.errorLines;
     }
 });
 

@@ -55,7 +55,7 @@ function springRequest(obj, callback, errorHandler) {
     };
     if (obj.data)
         Ext.apply(reqObj, {
-            jsonData: obj.data instanceof Object ?  Ext.encode(obj.data) : obj.data
+            jsonData: obj.data instanceof Object ? Ext.encode(obj.data) : obj.data
         });
     if (obj.params)
         Ext.apply(reqObj, {
@@ -105,19 +105,29 @@ function loadErrorPage() {
     }));
 }
 
-function goToErrorPage(){
+function goToErrorPage() {
     loadErrorPage()
 }
 
-function getUser(s,f){
+function getUser(s, f) {
 
-    if(!s) s = function(){}
-    if(!f) f = function(){}
+    if (!s) s = function () {
+    }
+    if (!f) f = function () {
+    }
 
     springRequest({
         url: 'alan/get-user',
         method: 'POST',
         data: null,
     }, s, f);
+}
+
+function repeatString(s, n) {
+    n = Math.floor(n);
+    if (!n || n < 0) return "";
+    var res = "";
+    while (n--) res += s;
+    return res;
 }
 

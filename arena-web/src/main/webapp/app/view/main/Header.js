@@ -8,7 +8,9 @@ Ext.define('AA.view.main.Header', {
         var me = this;
         cfg = cfg || {};
 
-        var userBtn = Ext.create('AA.view.main.User');
+        var userBtn = Ext.create('AA.view.main.User',{
+            iconCls : 'user-icon'
+        });
 
         var logo = Ext.create('Ext.Img', {
             src: '/images/alan-arena.png',
@@ -19,6 +21,7 @@ Ext.define('AA.view.main.Header', {
         var home = Ext.create('Ext.button.Button', {
             text: 'HOME',
             scale: 'large',
+            iconCls : 'home-icon',
             handler: function () {
                 window.location.href = "#home"
             }
@@ -27,6 +30,7 @@ Ext.define('AA.view.main.Header', {
         var problems = Ext.create('Ext.button.Button', {
             text: 'ამოცანები',
             scale: 'large',
+            iconCls : 'problems-icon',
             handler: function () {
                 window.location.href = "#problems"
             }

@@ -7,6 +7,26 @@
     opacity: 0.5;
 }
 
+.home-icon {
+    background-image: url("/images/home-circle-blue-24.png");
+}
+
+.problems-icon {
+    background-image: url("/images/menu_stack-24.png");
+}
+
+.user-icon {
+    background-image: url("/images/user.png");
+}
+
+.logout-icon {
+    background-image: url("/images/exit_delete_close_remove_door-16.png");
+}
+
+.user-info-icon {
+    background-image: url("/images/user-info-black-16.png");
+}
+
 .tape-item {
     width: 40px;
 }
@@ -127,5 +147,8 @@ a.unsolved {
 }
 
 .line-error-sign {
-background-color: red;
+    background-image: url("/images/error-16x16.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-position-x: 5px;
 }

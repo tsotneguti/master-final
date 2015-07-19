@@ -5,6 +5,8 @@ Ext.define('AA.view.coding.Tape', {
     extend: 'Ext.panel.Panel',
     layout: 'hbox',
     border: false,
+    bodyPadding: 5,
+    style: 'border-radius: 5px',
     constructor: function (cfg) {
         cfg = cfg || {};
         me = this;
@@ -20,25 +22,25 @@ Ext.define('AA.view.coding.Tape', {
         });
 
         var l = Ext.create('Ext.Button', {
-            text: '<',
+            text: '&#10096;',
             handler: function () {
                 move(-1);
             }
         });
         var ll = Ext.create('Ext.Button', {
-            text: '<<',
+            text: '&#10096;x10',
             handler: function () {
                 move(-10);
             }
         });
         var r = Ext.create('Ext.Button', {
-            text: '>',
+            text: '&#10097;',
             handler: function () {
                 move(1);
             }
         });
         var rr = Ext.create('Ext.Button', {
-            text: '>>',
+            text: '10x&#10097;',
             handler: function () {
                 move(10);
             }
