@@ -11,6 +11,17 @@
     background-image: url("/images/home-circle-blue-24.png");
 }
 
+.header-logo {
+    text-shadow: 1px 4px 2px rgb(21, 127, 204), 0 0 1em rgb(21, 127, 204), 0 0 0.2em black;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.header-logo:active {
+
+}
+
 .problems-icon {
     background-image: url("/images/menu_stack-24.png");
 }

@@ -4,18 +4,92 @@
 
 Turing = function () {
     var turing = {
-            state: "",
-            code: "",
-            commands : [],
-            notchs : [],
-            init: function (state, code) {
+            tape: [],
+            position: 0,
+            code: [],
+            commands: [],
+            notchs: {},
+            stepId: 0,
+            currentCmdLine: 0,
+            lastMoved : 0,
+            init: function (tape, position, code) {
                 var me = this;
-                if (tape) me.state = state;
+                if (tape) me.tape = tape;
+                if (position) me.position = position;
                 if (code) me.code = code;
 
+                for (var i in code) {
+                    if (code[i] == "") code.splice(i, 1);
+                }
+
+                for (var i in code) {
+                    if (code[i].match(/^\d\d*$/)) me.notchs[code[i]] = me.commands.length;
+                    else me.commands.push(me.parseCommand(code[i]));
+                }
+
+                return me;
             },
             nextStep: function () {
+                var me = this;
+                me.lastMoved = 0;
+                if (me.currentCmdLine >= me.commands.length) return false;
+                switch (me.commands[me.currentCmdLine].cmd) {
+                    case "L" :
+                        me.execL();
+                        break;
+                    case "R" :
+                        me.execR();
+                        break;
+                    case "S" :
+                        me.execS();
+                        break;
+                    case "W" :
+                        me.execW();
+                        break;
+                    case "G" :
+                        me.execG();
+                        break;
+                    case "I" :
+                        me.execI();
+                        break;
+                }
 
+                me.currentCmdLine++;
+                me.stepId++;
+                return true;
+            },
+            execL: function () {
+                var me = this;
+                if (!me.position) {
+                    me.tape.splice(0, 0, " ");
+                } else me.position--;
+                me.lastMoved = -1;
+            },
+            execR: function () {
+                var me = this;
+                if (me.position >= me.tape.length) {
+                    me.tape.push(" ");
+                }
+                me.position++;
+                me.lastMoved = 1;
+            },
+            execS: function () {
+                var me = this;
+                me.currentCmdLine = me.commands.length;
+            },
+            execW: function () {
+                var me = this;
+                me.tape[me.position] = me.commands[me.currentCmdLine].params[0];
+            },
+            execG: function () {
+                var me = this;
+                me.currentCmdLine = me.commands[me.currentCmdLine].params[0];
+            },
+            execI: function () {
+                var me = this;
+                if (me.commands[me.currentCmdLine].params[0] === me.tape[me.position]) {
+                    me.currentCmdLine = me.commands[me.currentCmdLine].params[1];
+                }
             },
             parseCommand: function (cmd) {
                 cmd = cmd ? cmd.replace(/\s+/g, ' ').trim() : cmd;

@@ -7,7 +7,7 @@ Ext.define('AA.view.coding.CodePanel', {
     constructor: function (cfg) {
         cfg = cfg || {};
         var me = this;
-
+        cp = me;
         me.errorLines = [];
 
         var codeArea = Ext.create('Ext.Component', {
@@ -42,7 +42,8 @@ Ext.define('AA.view.coding.CodePanel', {
             textarea: code
         });
 
-        var visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
+//TODO
+         visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
             region: 'north',
             collapsible: true,
             title: 'შესრულების ვიზუალიზაცია'
@@ -89,7 +90,7 @@ Ext.define('AA.view.coding.CodePanel', {
         me.callParent(arguments);
 
         function run() {
-            var values = visualisation.tape.tape.form.getValues();
+            var values = visualisation.tape.getValues();
             var data = [], tape = [];
             var i, j;
 
@@ -121,7 +122,23 @@ Ext.define('AA.view.coding.CodePanel', {
         }
 
         function runTesting() {
-            var values = visualisation.tape.tape.form.getValues();
+            me.machine = getMachine();
+            machine = me.machine;
+            me.runningId = setInterval(function () {
+                if (!machine.nextStep()) {
+                    clearInterval(me.runningId);
+                }
+                updateState();
+            }, 1000);
+        }
+
+        function updateState() {
+            visualisation.tape.move(me.machine.lastMoved);
+            visualisation.tape.tape.current.setValue(me.machine.tape[me.machine.position]);
+        }
+
+        function getMachine() {
+            var values = visualisation.tape.getValues();
             var data = [], tape = [];
             var i, j;
 
@@ -130,12 +147,17 @@ Ext.define('AA.view.coding.CodePanel', {
             }
 
             for (i = 0; i < data.length; i++) if (data[i]) break;
+
+            //TODO
+            var posInTapeArray = visualisation.tape.tape.currentPos - visualisation.tape.totalPos;
+            posInTapeArray -= i;
+
             for (j = data.length - 1; j >= 0; j--) if (data[j]) break;
             for (; i <= j; i++) tape.push(data[i] ? data[i] : " ");
 
-            var c = codeArea.el.dom.innerText.split("\n");
+            var code = codeArea.el.dom.innerText.split("\n");
 
-            if (me.errorLines) {
+            if (me.errorLines.length) {
                 Ext.MessageBox.show({
                     title: 'სინტაქსური შეცდომა',
                     msg: me.errorLines,
@@ -145,6 +167,21 @@ Ext.define('AA.view.coding.CodePanel', {
                 });
                 return;
             }
+
+            // full tapeArray
+            while (posInTapeArray < 0) {
+                tape.splice(0, 0, " ");
+                posInTapeArray++
+            }
+
+            var diff = posInTapeArray - tape.length + 1;
+            if (diff > 0) {
+                while (diff > 0) {
+                    tape.push(" ");
+                    diff--;
+                }
+            }
+            return Turing().init(tape, posInTapeArray, code);
         }
 
         me.loadProblem = function (problemId) {
@@ -288,17 +325,18 @@ Ext.define('AA.view.coding.CodePanel', {
                             me.errorLines.splice(me.errorLines.indexOf(ind), 1);
                     }
                 }
-
+                //linesDiv.childNodes[ind].classList.remove("code-current-line");
                 line.classList.remove('code-current-line');
 
                 ind++;
             });
             // highlight current
+            //TODO indeqsi sapovnelia
+            //linesDiv.childNodes[ind].classList.add("code-current-line");
             currentLine.classList.add('code-current-line');
         }
 
         hcl = highlightCurrentLine;
-
 
         lc = linesContainer;
         ld = linesDiv;

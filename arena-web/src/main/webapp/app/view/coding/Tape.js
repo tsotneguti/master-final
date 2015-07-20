@@ -9,7 +9,8 @@ Ext.define('AA.view.coding.Tape', {
     style: 'border-radius: 5px',
     constructor: function (cfg) {
         cfg = cfg || {};
-        me = this;
+        var me = this;
+        Tape = me;
 
         var _ = {xtype: 'splitter', width: 2};
 
@@ -24,25 +25,25 @@ Ext.define('AA.view.coding.Tape', {
         var l = Ext.create('Ext.Button', {
             text: '&#10096;',
             handler: function () {
-                move(-1);
+                me.move(-1);
             }
         });
         var ll = Ext.create('Ext.Button', {
             text: '&#10096;x10',
             handler: function () {
-                move(-10);
+                me.move(-10);
             }
         });
         var r = Ext.create('Ext.Button', {
             text: '&#10097;',
             handler: function () {
-                move(1);
+                me.move(1);
             }
         });
         var rr = Ext.create('Ext.Button', {
             text: '10x&#10097;',
             handler: function () {
-                move(10);
+                me.move(10);
             }
         });
 
@@ -96,7 +97,7 @@ Ext.define('AA.view.coding.Tape', {
                     addItem(i);
                 }
 
-                tape.tapeDiv = $(tape.el.dom).find("[data-ref=targetEl]");
+                //tape.tapeDiv = $(tape.el.dom).find("[data-ref=targetEl]");
                 tape.currentPos = Math.round(tape.totalItems / 2) - 1;
                 me.totalPos = 0;
                 tape.current = tape.items.items[tape.currentPos];
@@ -104,10 +105,12 @@ Ext.define('AA.view.coding.Tape', {
                 tape.halfSize = tape.currentPos;
             }, 0);
 
-
+            setTimeout(function () {
+                slideValues(0);
+            }, 100);
         });
 
-        function move(v) {
+        me.move = function (v) {
             log("move " + v);
 
             if (tape.currentPos + v >= tape.totalItems - 1 || tape.currentPos + v <= 0)
@@ -136,7 +139,12 @@ Ext.define('AA.view.coding.Tape', {
             }
             tape.getForm().setValues(values);
 
-            move(-v);
+            me.move(-v);
+        }
+
+        me.getValues = function () {
+            slideValues(0);
+            return me.values;
         }
     }
 });
