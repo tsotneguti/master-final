@@ -11,7 +11,7 @@ Turing = function () {
             notchs: {},
             stepId: 0,
             currentCmdLine: 0,
-            lastMoved : 0,
+            lastMoved: 0,
             init: function (tape, position, code) {
                 var me = this;
                 if (tape) me.tape = tape;
@@ -54,7 +54,6 @@ Turing = function () {
                         break;
                 }
 
-                me.currentCmdLine++;
                 me.stepId++;
                 return true;
             },
@@ -64,6 +63,7 @@ Turing = function () {
                     me.tape.splice(0, 0, " ");
                 } else me.position--;
                 me.lastMoved = -1;
+                me.currentCmdLine++;
             },
             execR: function () {
                 var me = this;
@@ -72,6 +72,7 @@ Turing = function () {
                 }
                 me.position++;
                 me.lastMoved = 1;
+                me.currentCmdLine++;
             },
             execS: function () {
                 var me = this;
@@ -80,16 +81,17 @@ Turing = function () {
             execW: function () {
                 var me = this;
                 me.tape[me.position] = me.commands[me.currentCmdLine].params[0];
+                me.currentCmdLine++;
             },
             execG: function () {
                 var me = this;
-                me.currentCmdLine = me.commands[me.currentCmdLine].params[0];
+                me.currentCmdLine = me.notchs[me.commands[me.currentCmdLine].params[0]];
             },
             execI: function () {
                 var me = this;
-                if (me.commands[me.currentCmdLine].params[0] === me.tape[me.position]) {
-                    me.currentCmdLine = me.commands[me.currentCmdLine].params[1];
-                }
+                if (me.commands[me.currentCmdLine].params[0] == me.tape[me.position]) {
+                    me.currentCmdLine = me.notchs[me.commands[me.currentCmdLine].params[1]];
+                } else me.currentCmdLine++;
             },
             parseCommand: function (cmd) {
                 cmd = cmd ? cmd.replace(/\s+/g, ' ').trim() : cmd;
