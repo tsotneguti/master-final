@@ -34,11 +34,11 @@ Ext.define('AA.view.problems.Problems', {
 
         me.items = [grid];
 
-        me.tbar = [{
-            text: 'reload',
-            handler: loadProblems,
-            iconCls: 'reload-image'
-        }];
+        //me.tbar = [{
+        //    text: 'reload',
+        //    handler: loadProblems,
+        //    iconCls: 'reload-image'
+        //}];
 
         me.callParent(arguments);
 
@@ -53,7 +53,10 @@ Ext.define('AA.view.problems.Problems', {
                 data: null,
             }, function (data) {
                 for (var i in data)
-                    data[i].difficulty = repeatString("&#9733;", data[i].difficulty / 10 + 1) + " / 10 x &#9733;";
+                    data[i].difficulty = repeatString("<span class='star-full'>&#9733;</span>", data[i].difficulty / 10 + 1) +
+                        repeatString("<span class='star-empty'>&#9734;</span>", 10 - Math.floor(data[i].difficulty / 10 + 1));
+                        //+ " / <span class='problems-difficulty-total'>" + Math.floor(data[i].difficulty / 10 + 1) + "</span>";
+
                 grid.store.loadData(data);
             }, function () {
                 log("error")

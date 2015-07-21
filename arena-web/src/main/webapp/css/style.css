@@ -23,7 +23,7 @@
 }
 
 .problems-icon {
-    background-image: url("/images/menu_stack-24.png");
+    background-image: url("/images/genius-24.png");
 }
 
 .user-icon {
@@ -162,4 +162,21 @@ a.unsolved {
     background-repeat: no-repeat;
     background-position: left;
     background-position-x: 5px;
+}
+
+.problems-difficulty-total {
+    text-shadow: 1px 1px 2px rgb(21, 127, 204), 0 0 0em rgb(21, 127, 204), 0 0 0.2em black;
+    color: white;
+    font-size: 20px;
+}
+
+.star-full {
+    color: rgb(21, 127, 204);
+    font-size: 20px;
+
+}
+
+.star-empty {
+    color: rgb(21, 127, 204);
+    font-size: 20px;
 }
