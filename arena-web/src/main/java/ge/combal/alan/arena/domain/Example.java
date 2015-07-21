@@ -1,25 +1,27 @@
 package ge.combal.alan.arena.domain;
 
+import java.util.ArrayList;
+
 /**
  * Created by tsotne on 7/13/15.
  */
 public class Example {
-    private String in;
-    private String out;
+    private ArrayList<Character> in;
+    private ArrayList<Character> out;
 
-    public String getIn() {
+    public ArrayList<Character> getIn() {
         return in;
     }
 
-    public void setIn(String in) {
+    public void setIn(ArrayList<Character> in) {
         this.in = in;
     }
 
-    public String getOut() {
+    public ArrayList<Character> getOut() {
         return out;
     }
 
-    public void setOut(String out) {
+    public void setOut(ArrayList<Character> out) {
         this.out = out;
     }
 }

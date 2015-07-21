@@ -29,7 +29,6 @@ public class DequeTape implements Tape {
     }
 
     public Tape left() {
-
         right.addFirst(current);
         current = (left.isEmpty() ? EMPTY_SYMBOL : right.pollLast());
         return this;

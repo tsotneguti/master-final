@@ -14,7 +14,14 @@ function log() {
 }
 
 function logout() {
-    window.location.replace(window.location.origin + "/login?logout");
+    springRequest({
+        url: 'login?logout',
+        method: 'POST',
+    }, function (data) {
+        window.location.replace(window.location.origin + "/");
+    }, function () {
+        log("error")
+    });
 }
 
 function changeTheme(item) {

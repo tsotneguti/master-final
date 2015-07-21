@@ -1,5 +1,7 @@
 package ge.combal.alan.turing;
 
+import java.util.ArrayList;
+
 /**
  * Created by tsotne on 6/30/15.
  */
@@ -7,10 +9,6 @@ public class Result {
     private String result;
 
     public Result() {
-    }
-
-    public Result(String result) {
-        this.result = result;
     }
 
     public String getResult() {

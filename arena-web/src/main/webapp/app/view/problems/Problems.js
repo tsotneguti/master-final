@@ -55,7 +55,7 @@ Ext.define('AA.view.problems.Problems', {
                 for (var i in data)
                     data[i].difficulty = repeatString("<span class='star-full'>&#9733;</span>", data[i].difficulty / 10 + 1) +
                         repeatString("<span class='star-empty'>&#9734;</span>", 10 - Math.floor(data[i].difficulty / 10 + 1));
-                        //+ " / <span class='problems-difficulty-total'>" + Math.floor(data[i].difficulty / 10 + 1) + "</span>";
+                //+ " / <span class='problems-difficulty-total'>" + Math.floor(data[i].difficulty / 10 + 1) + "</span>";
 
                 grid.store.loadData(data);
             }, function () {

@@ -43,7 +43,7 @@ Ext.define('AA.view.coding.CodePanel', {
         });
 
 //TODO
-         visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
+        visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
             region: 'north',
             collapsible: true,
             title: 'შესრულების ვიზუალიზაცია'
@@ -106,12 +106,18 @@ Ext.define('AA.view.coding.CodePanel', {
 
             //for (i in c) c[i] = c[i].replace(/ /g, '');
 
+            var correctCode = [];
+            for(var i in c) {
+                if(Turing().parseCommand(c[i]).result == "success" && Turing().parseCommand(c[i]).cmd)
+                    correctCode.push(c[i].trim());
+            }
+log(correctCode)
             springRequest({
                 url: 'machine/eval',
                 method: 'POST',
                 data: {
-                    tape: tape,
-                    code: c
+                    code: correctCode,
+                    problemId : me.problemId
                 }
             }, function (data) {
                 Ext.MessageBox.alert("შედეგი", data.result);
@@ -171,7 +177,7 @@ Ext.define('AA.view.coding.CodePanel', {
             // full tapeArray
             while (posInTapeArray < 0) {
                 tape.splice(0, 0, " ");
-                posInTapeArray++
+                posInTapeArray++;
             }
 
             var diff = posInTapeArray - tape.length + 1;

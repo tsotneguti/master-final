@@ -3,6 +3,8 @@ package ge.combal.alan.arena.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 /**
  * Created by nati on 03.07.2015.
  */
@@ -12,13 +14,11 @@ public class Test {
     @Id
     private String id;
 
-    private String name;
+    private String problemId;
+
+    private List<Example> tests;
 
     public Test() {
-    }
-
-    public Test(String name) {
-        this.name = name;
     }
 
     public String getId() {
@@ -29,11 +29,19 @@ public class Test {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getProblemId() {
+        return problemId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProblemId(String problemId) {
+        this.problemId = problemId;
+    }
+
+    public List<Example> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Example> tests) {
+        this.tests = tests;
     }
 }

@@ -4,7 +4,7 @@
 Ext.define('AA.view.user.UserInfo', {
     extend: 'Ext.panel.Panel',
     border: false,
-    layout : 'border',
+    layout: 'border',
     bodyCls: 'user-info',
     padding: 20,
     constructor: function (cfg) {
@@ -12,19 +12,11 @@ Ext.define('AA.view.user.UserInfo', {
         var me = this;
 
         var problemsStore = Ext.create('Ext.data.Store', {
-            fields: ['class'],
+            fields: ['class', 'problemId', 'status'],
             data: [
-                {class : 'problems-item',problemId:1,status : 'solved'},
-                {class : 'problems-item',problemId:2,status : 'unsolved'},
-                {class : 'problems-item',problemId:3,status : 'solved'},
-                {class : 'problems-item',problemId:4,status : 'unsolved'},
-                {class : 'problems-item',problemId:5,status : 'unsolved'},
-                {class : 'problems-item',problemId:6,status : 'unsolved'},
-                {class : 'problems-item',problemId:7,status : 'unsolved'},
-                {class : 'problems-item',problemId:8,status : 'unsolved'},
-                {class : 'problems-item',problemId:9,status : 'unsolved'},
-                {class : 'problems-item',problemId:10,status : 'unsolved'},
-                {class : 'problems-item',problemId:11,status : 'unsolved'}
+                //{class: 'problems-item', problemId: 1, status: 'solved'},
+                //{class: 'problems-item', problemId: 2, status: 'unsolved'},
+                //{class: 'problems-item', problemId: 3, status: 'solved'}
             ]
         });
 
@@ -43,18 +35,18 @@ Ext.define('AA.view.user.UserInfo', {
         });
 
         var solvedProblems = Ext.create('Ext.panel.Panel', {
-            region : 'center',
-            tbar : ['->',{
-                xtype : 'label',
-                text : "ამოცანები"
-            },'->'],
-            layout : 'fit',
-            items : [view]
+            region: 'center',
+            tbar: ['->', {
+                xtype: 'label',
+                text: "ამოცანები"
+            }, '->'],
+            layout: 'fit',
+            items: [view]
         });
 
-        var userData = Ext.create('Ext.form.FieldSet',{
-            style : 'border : 0',
-            items : [{
+        var userData = Ext.create('Ext.form.FieldSet', {
+            style: 'border : 0',
+            items: [{
                 xtype: 'displayfield',
                 fieldLabel: 'username',
                 name: 'username'
@@ -77,17 +69,17 @@ Ext.define('AA.view.user.UserInfo', {
         })
 
         var form = Ext.create('Ext.form.Panel', {
-            border : false,
-            layout : 'hbox',
-            region : 'north',
-            height : '300',
-            split : true,
-            defaults : {
-                flex : 1
+            border: false,
+            layout: 'hbox',
+            region: 'north',
+            height: '300',
+            split: true,
+            defaults: {
+                flex: 1
             },
-            items : [userData, {
-                xtype : 'fieldset',
-                items : [{
+            items: [userData, {
+                xtype: 'fieldset',
+                items: [{
                     xtype: 'displayfield',
                     fieldLabel: 'ქულა',
                     name: 'pointsTotal'
@@ -105,12 +97,33 @@ Ext.define('AA.view.user.UserInfo', {
                 log(user)
 
                 user.pointsTotal = 0;
-                for(var i in user.points) {
+                for (var i in user.points) {
                     user.pointsTotal += user.points[i].points;
                 }
 
                 form.form.setValues(user);
+
+                springRequest({
+                    url: 'alan/problems',
+                    method: 'POST',
+                    data: null,
+                }, function (data) {
+                    log(data)
+                    var problemsArr = [];
+                    for (var i in data) {
+                        problemsArr.push({
+                            class: "problems-item",
+                            problemId: data[i].problemId,
+                            status: user.solvedProblems.indexOf(data[i].problemId) == -1 ? "unsolved" : "solved"
+                        });
+                    }
+                    problemsStore.loadData(problemsArr);
+                }, function () {
+                    log("error")
+                });
+
             });
         }
+
     }
 });

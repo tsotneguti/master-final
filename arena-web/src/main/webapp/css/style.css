@@ -89,12 +89,20 @@ a.problems-item:active {
     background-color: #357ae8;
 }
 
+a.problems-item:hover {
+    font-size: large;
+}
+
 a.solved {
-    background-color: rgb(88, 200, 70) !important;
+    background-color: rgb(111, 255, 87) !important;
+    color: black;
+    font-style: italic;
 }
 
 a.unsolved {
-    background-color: rgba(219, 43, 20, 0.83) !important;
+    background-color: rgba(255, 61, 33, 0.83) !important;
+    /*color: black;*/
+    font-style: italic;
 }
 
 .coding {

@@ -27,11 +27,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/", "/index.html", "/static/**", "/resources/**", "/resources/public/**", "/test", "/register.html", "/login.html", "/alan/css/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/static/**", "/resources/**", "/resources/public/**", "/alan/css/**").permitAll()
                 .anyRequest().authenticated()
 
 //                .and().formLogin().loginPage("/alan/login").usernameParameter("username").passwordParameter("password").failureUrl("/#error").permitAll().and()
 //                .logout().logoutUrl("/alan/login?logout").permitAll()
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().logout().deleteCookies().logoutUrl("/login?logout").permitAll()
 
                 .and().csrf().disable()
                 .httpBasic().disable();

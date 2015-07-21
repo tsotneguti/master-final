@@ -30,16 +30,7 @@ public class MainController {
     }
 
     @Autowired
-    TestRepository repository;
-
-    @Autowired
     ProblemRepository problemRepository;
-
-    @RequestMapping("test")
-    public Test test(String name) {
-        return repository.save(new Test(name));
-    }
-
 
     @RequestMapping("/")
     public void alan(HttpServletResponse response) throws IOException {
