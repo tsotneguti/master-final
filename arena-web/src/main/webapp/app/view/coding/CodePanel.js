@@ -42,11 +42,11 @@ Ext.define('AA.view.coding.CodePanel', {
             textarea: code
         });
 
-//TODO
-        visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
+        var visualisation = Ext.create('AA.view.coding.VisualisationPanel', {
             region: 'north',
             collapsible: true,
-            title: 'შესრულების ვიზუალიზაცია'
+            title: 'შესრულების ვიზუალიზაცია',
+            codePanel: me
         });
 
         var runBtn = Ext.create('Ext.button.Button', {
@@ -80,7 +80,9 @@ Ext.define('AA.view.coding.CodePanel', {
             region: 'west',
             layout: 'fit',
             items: [code],
-            tbar: [themeBtn, runBtn, runTestBtn],
+            tbar: [
+                //themeBtn,
+                runBtn, '->', runTestBtn],
             minWidth: 400,
             //border : false
         });
@@ -88,6 +90,38 @@ Ext.define('AA.view.coding.CodePanel', {
         me.items = [codePanel, visualisation, problemPanel];
 
         me.callParent(arguments);
+
+        function goToPrev() {
+            window.location.href = "#problem/" + (me.problemId - 1);
+
+        }
+
+        function goToNext() {
+            window.location.href = "#problem/" + (+me.problemId + 1);
+        }
+
+        function updateState() {
+            visualisation.tape.move(me.machine.lastMoved);
+            visualisation.tape.tape.current.setValue(me.machine.tape[me.machine.position]);
+        }
+
+        me.on('afterrender', function () {
+            linesContainer.el.dom.appendChild(linesDiv);
+            codeArea.el.dom.focus();
+
+            checkCodeAreaDivEmpty();
+            refreshlines();
+            var txtArea = codeArea.el.dom;
+            var lines = linesDiv;
+
+            txtArea.onscroll = function () {
+                lines.style.top = -(txtArea.scrollTop) + "px";
+                return true;
+            }
+
+            txtArea.onkeyup = onKeyListener;
+            txtArea.onkeydown = onKeyListener;
+        });
 
         function run() {
             var values = visualisation.tape.getValues();
@@ -104,20 +138,18 @@ Ext.define('AA.view.coding.CodePanel', {
 
             var c = codeArea.el.dom.innerText.split("\n");
 
-            //for (i in c) c[i] = c[i].replace(/ /g, '');
-
             var correctCode = [];
-            for(var i in c) {
-                if(Turing().parseCommand(c[i]).result == "success" && Turing().parseCommand(c[i]).cmd)
+            for (var i in c) {
+                if (Turing().parseCommand(c[i]).result == "success" && Turing().parseCommand(c[i]).cmd)
                     correctCode.push(c[i].trim());
             }
-log(correctCode)
+
             springRequest({
                 url: 'machine/eval',
                 method: 'POST',
                 data: {
                     code: correctCode,
-                    problemId : me.problemId
+                    problemId: me.problemId
                 }
             }, function (data) {
                 Ext.MessageBox.alert("შედეგი", data.result);
@@ -129,18 +161,56 @@ log(correctCode)
 
         function runTesting() {
             me.machine = getMachine();
-            machine = me.machine;
-            me.runningId = setInterval(function () {
-                if (!machine.nextStep()) {
-                    clearInterval(me.runningId);
-                }
-                updateState();
-            }, 1000);
+            me.play();
+            visualisation.setReadOnly(true);
         }
 
-        function updateState() {
-            visualisation.tape.move(me.machine.lastMoved);
-            visualisation.tape.tape.current.setValue(me.machine.tape[me.machine.position]);
+        function checkCodeAreaDivEmpty() {
+            if (!codeArea.el.dom.childElementCount) {
+                me.codeDiv = document.createElement("div");
+                var br = document.createElement("br");
+                me.codeDiv.appendChild(br);
+                codeArea.el.dom.appendChild(me.codeDiv);
+            }
+        }
+
+        // checking codearea
+
+        codeArea.on('afterrender', function () {
+            codeArea.el.on({
+                keydown: function () {
+                    setTimeout(highlightCurrentLine, 1)
+                },
+                mouseup: function () {
+                    highlightCurrentLine();
+                }
+            });
+        });
+
+        me.stop = function () {
+            clearInterval(me.runningId);
+            me.machine = null;
+        }
+
+        me.pause = function () {
+            clearInterval(me.runningId);
+        }
+
+        me.play = function (t) {
+            t = t ? t : 300;
+            if (!me.machine) return;
+
+            visualisation.pauseBtn.enable();
+            visualisation.stopBtn.enable();
+
+            me.runningId = setInterval(function () {
+                if (!me.machine.nextStep()) {
+                    clearInterval(me.runningId);
+                }
+                me.currentLine = codeArea.el.dom.childNodes[me.machine.lineNumberTotal[me.machine.currentCmdLine]];
+                highlightCurrentLine();
+                updateState();
+            }, t);
         }
 
         function getMachine() {
@@ -154,7 +224,6 @@ log(correctCode)
 
             for (i = 0; i < data.length; i++) if (data[i]) break;
 
-            //TODO
             var posInTapeArray = visualisation.tape.tape.currentPos - visualisation.tape.totalPos;
             posInTapeArray -= i;
 
@@ -188,6 +257,54 @@ log(correctCode)
                 }
             }
             return Turing().init(tape, posInTapeArray, code);
+        }
+
+        function onKeyListener() {
+            checkCodeAreaDivEmpty();
+            refreshlines();
+            return true;
+        }
+
+        function refreshlines() {
+            var nLines = codeArea.el.dom.childElementCount;
+            var lines = linesDiv;
+            lines.innerHTML = "";
+            for (var i = 1; i <= nLines; i++) {
+                lines.innerHTML = lines.innerHTML + "<div class='line'>" + i + ":</div>";
+            }
+            lines.style.top = -(codeArea.el.dom.scrollTop) + "px";
+            highlightCurrentLine();
+            codeArea.el.dom.classList.remove('code-current-line');
+        }
+
+        function highlightCurrentLine() {
+            var sel = document.getSelection(),
+                nd = sel.anchorNode;
+            var currentLine = nd.tagName == 'DIV' ? nd : nd.parentNode;
+            if (me.currentLine)
+                currentLine = me.currentLine;
+            // clear all
+            var ind = 0;
+            me.errorLines = [];
+            codeArea.el.query('div').forEach(function (line) {
+                if (linesDiv.childNodes[ind]) {
+                    var text = line.innerText;
+                    if (Turing().parseCommand(text).result === "error") {
+                        linesDiv.childNodes[ind].classList.add("line-error-sign");
+                        me.errorLines.push(ind);
+                    } else {
+                        linesDiv.childNodes[ind].classList.remove("line-error-sign");
+                        if (me.errorLines.indexOf(ind) != -1)
+                            me.errorLines.splice(me.errorLines.indexOf(ind), 1);
+                    }
+                }
+                //linesDiv.childNodes[ind].classList.remove("code-current-line");
+                line.classList.remove('code-current-line');
+
+                ind++;
+            });
+            // highlight current
+            currentLine.classList.add('code-current-line');
         }
 
         me.loadProblem = function (problemId) {
@@ -245,105 +362,8 @@ log(correctCode)
             });
         }
 
-        function goToPrev() {
-            window.location.href = "#problem/" + (me.problemId - 1);
-
-        }
-
-        function goToNext() {
-            window.location.href = "#problem/" + (+me.problemId + 1);
-        }
-
-        me.on('afterrender', function () {
-            linesContainer.el.dom.appendChild(linesDiv);
-            codeArea.el.dom.focus();
-
-            checkCodeAreaDivEmpty();
-            refreshlines();
-            var txtArea = codeArea.el.dom;
-            var lines = linesDiv;
-
-            txtArea.onscroll = function () {
-                lines.style.top = -(txtArea.scrollTop) + "px";
-                return true;
-            }
-
-            txtArea.onkeyup = onKeyListener;
-            txtArea.onkeydown = onKeyListener;
-        });
-
-        function onKeyListener() {
-            checkCodeAreaDivEmpty();
-            refreshlines();
-            return true;
-        }
-
-        function checkCodeAreaDivEmpty() {
-            if (!codeArea.el.dom.childElementCount) {
-                me.codeDiv = document.createElement("div");
-                var br = document.createElement("br");
-                me.codeDiv.appendChild(br);
-                codeArea.el.dom.appendChild(me.codeDiv);
-            }
-        }
-
-        function refreshlines() {
-            var nLines = codeArea.el.dom.childElementCount;
-            var lines = linesDiv;
-            lines.innerHTML = "";
-            for (var i = 1; i <= nLines; i++) {
-                lines.innerHTML = lines.innerHTML + "<div class='line'>" + i + ":</div>";
-            }
-            lines.style.top = -(codeArea.el.dom.scrollTop) + "px";
-            highlightCurrentLine();
-            codeArea.el.dom.classList.remove('code-current-line');
-        }
-
-        // checking codearea
-
-        codeArea.on('afterrender', function () {
-            codeArea.el.on({
-                keydown: function () {
-                    setTimeout(highlightCurrentLine, 1)
-                },
-                mouseup: function () {
-                    highlightCurrentLine();
-                }
-            });
-        });
-
-        function highlightCurrentLine() {
-            var sel = document.getSelection(),
-                nd = sel.anchorNode;
-            var currentLine = nd.tagName == 'DIV' ? nd : nd.parentNode;
-            // clear all
-            var ind = 0;
-            me.errorLines = [];
-            codeArea.el.query('div').forEach(function (line) {
-                if (linesDiv.childNodes[ind]) {
-                    var text = line.innerText;
-                    if (Turing().parseCommand(text).result === "error") {
-                        linesDiv.childNodes[ind].classList.add("line-error-sign");
-                        me.errorLines.push(ind);
-                    } else {
-                        linesDiv.childNodes[ind].classList.remove("line-error-sign");
-                        if (me.errorLines.indexOf(ind) != -1)
-                            me.errorLines.splice(me.errorLines.indexOf(ind), 1);
-                    }
-                }
-                //linesDiv.childNodes[ind].classList.remove("code-current-line");
-                line.classList.remove('code-current-line');
-
-                ind++;
-            });
-            // highlight current
-            //TODO indeqsi sapovnelia
-            //linesDiv.childNodes[ind].classList.add("code-current-line");
-            currentLine.classList.add('code-current-line');
-        }
-
         hcl = highlightCurrentLine;
-
+        vis = visualisation;
         lc = linesContainer;
         ld = linesDiv;
         ca = codeArea;

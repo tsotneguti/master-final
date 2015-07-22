@@ -188,3 +188,19 @@ a.unsolved {
     color: rgb(21, 127, 204);
     font-size: 20px;
 }
+
+.play-btn {
+    background-image: url("/images/play-24.png");
+}
+
+.pause-btn {
+    background-image: url("/images/pause-24.png");
+}
+
+.stop-btn {
+    background-image: url("/images/stop-24.png");
+}
+
+.clear-btn {
+    background-image: url("/images/clear-24.png");
+}

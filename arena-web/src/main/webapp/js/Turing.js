@@ -12,6 +12,7 @@ Turing = function () {
             stepId: 0,
             currentCmdLine: 0,
             lastMoved: 0,
+            lineNumberTotal: {},
             init: function (tape, position, code) {
                 var me = this;
                 if (tape) me.tape = tape;
@@ -19,12 +20,11 @@ Turing = function () {
                 if (code) me.code = code;
 
                 for (var i in code) {
-                    if (code[i] == "") code.splice(i, 1);
-                }
-
-                for (var i in code) {
                     if (code[i].match(/^\d\d*$/)) me.notchs[code[i]] = me.commands.length;
-                    else me.commands.push(me.parseCommand(code[i]));
+                    else {
+                        me.commands.push(me.parseCommand(code[i]));
+                        me.lineNumberTotal[me.commands.length - 1] = i;
+                    }
                 }
 
                 return me;
@@ -52,10 +52,15 @@ Turing = function () {
                     case "I" :
                         me.execI();
                         break;
+                    default :
+                        me.next();
                 }
 
                 me.stepId++;
                 return true;
+            },
+            next: function () {
+                this.currentCmdLine++;
             },
             execL: function () {
                 var me = this;
@@ -95,6 +100,7 @@ Turing = function () {
             },
             parseCommand: function (cmd) {
                 cmd = cmd ? cmd.replace(/\s+/g, ' ').trim() : cmd;
+                if (cmd == "W") cmd += " ";
                 if (cmd === "") return {
                     cmd: "",
                     result: "success"

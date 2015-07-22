@@ -15,7 +15,12 @@ import java.io.IOException;
 public class LoginController {
 
     @RequestMapping("login")
-    public ModelAndView login(){
+    public ModelAndView login() {
         return new ModelAndView("login");
+    }
+
+    @RequestMapping("register")
+    public ModelAndView register() {
+        return new ModelAndView("register");
     }
 }

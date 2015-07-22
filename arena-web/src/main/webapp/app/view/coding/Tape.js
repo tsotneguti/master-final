@@ -22,32 +22,32 @@ Ext.define('AA.view.coding.Tape', {
             margin: '0 5 0 5'
         });
 
-        var l = Ext.create('Ext.Button', {
+        me.l = Ext.create('Ext.Button', {
             text: '&#10096;',
             handler: function () {
                 me.move(-1);
             }
         });
-        var ll = Ext.create('Ext.Button', {
+        me.ll = Ext.create('Ext.Button', {
             text: '&#10096;x10',
             handler: function () {
                 me.move(-10);
             }
         });
-        var r = Ext.create('Ext.Button', {
+        me.r = Ext.create('Ext.Button', {
             text: '&#10097;',
             handler: function () {
                 me.move(1);
             }
         });
-        var rr = Ext.create('Ext.Button', {
+        me.rr = Ext.create('Ext.Button', {
             text: '10x&#10097;',
             handler: function () {
                 me.move(10);
             }
         });
 
-        me.items = [ll, _, l, _, tape, _, r, _, rr];
+        me.items = [me.ll, _, me.l, _, tape, _, me.r, _, me.rr];
 
         me.tape = tape;
 
@@ -111,8 +111,6 @@ Ext.define('AA.view.coding.Tape', {
         });
 
         me.move = function (v) {
-            log("move " + v);
-
             if (tape.currentPos + v >= tape.totalItems - 1 || tape.currentPos + v <= 0)
                 slideValues(v);
 
