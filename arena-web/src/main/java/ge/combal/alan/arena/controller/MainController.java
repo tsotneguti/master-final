@@ -4,7 +4,6 @@ import ge.combal.alan.arena.domain.Problem;
 import ge.combal.alan.arena.domain.Test;
 import ge.combal.alan.arena.domain.User;
 import ge.combal.alan.arena.repository.ProblemRepository;
-import ge.combal.alan.arena.repository.TestRepository;
 import ge.combal.alan.arena.repository.UserRepository;
 import ge.combal.alan.arena.security.SecurityUser;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -43,9 +43,28 @@ Ext.define('AA.view.coding.VisualisationPanel', {
             }
         });
 
+        me.speedSlider = Ext.create('Ext.slider.Single', {
+            hideLabel: false,
+            labelAlign: 'right',
+            labelSeparator: '',
+            labelStyle: 'color : white !important',
+            fieldLabel: 'მ.წ.',
+            width: 214,
+            value: 30,
+            minValue: 1,
+            maxValue: 100,
+            listeners: {
+                change: function (slider, newValue) {
+                    cfg.codePanel.pause();
+                    if (me.playBtn.disabled)
+                        cfg.codePanel.play();
+                }
+            }
+        });
+
         me.bbar = Ext.create('Ext.toolbar.Toolbar', {
             style: 'background-color: rgb(21, 127, 204);',
-            items: [ me.stopBtn, me.pauseBtn, me.playBtn, '->', {
+            items: [me.stopBtn, me.pauseBtn, me.playBtn, me.speedSlider, '->', {
                 text: 'გასუფთავება',
                 iconCls: 'clear-btn',
                 scale: 'medium',

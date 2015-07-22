@@ -5,7 +5,7 @@ import java.util.Collection;
 public interface Tape {
 
 
-    char EMPTY_SYMBOL = ' ';
+    Character EMPTY_SYMBOL = ' ';
 
     Tape right();
     Tape left();

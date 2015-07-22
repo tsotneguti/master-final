@@ -10,8 +10,6 @@ public class Code {
 
     private String[] code;
 
-    private ArrayList<Character> tape;
-
     public Code() {
     }
 
@@ -31,11 +29,4 @@ public class Code {
         this.code = code;
     }
 
-    public ArrayList<Character> getTape() {
-        return tape;
-    }
-
-    public void setTape(ArrayList<Character> tape) {
-        this.tape = tape;
-    }
 }

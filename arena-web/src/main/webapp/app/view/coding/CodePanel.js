@@ -38,6 +38,7 @@ Ext.define('AA.view.coding.CodePanel', {
             cls: 'coding',
             items: [linesContainer, codeArea]
         });
+
         var themeBtn = Ext.create('AA.view.main.Theme', {
             textarea: code
         });
@@ -51,12 +52,16 @@ Ext.define('AA.view.coding.CodePanel', {
 
         var runBtn = Ext.create('Ext.button.Button', {
             scale: 'small',
-            text: 'გაშვება ( run )',
+            text: 'გაშვება',
+            iconCls: 'execute-icon',
+            scale: 'medium',
             handler: run
         });
         var runTestBtn = Ext.create('Ext.button.Button', {
             scale: 'small',
-            text: 'ტესტირება ( testing )',
+            text: 'ტესტირება',
+            iconCls: 'testing-icon',
+            scale: 'medium',
             handler: runTesting
         });
 
@@ -144,6 +149,8 @@ Ext.define('AA.view.coding.CodePanel', {
                     correctCode.push(c[i].trim());
             }
 
+            log(correctCode,me.problemId)
+
             springRequest({
                 url: 'machine/eval',
                 method: 'POST',
@@ -152,7 +159,7 @@ Ext.define('AA.view.coding.CodePanel', {
                     problemId: me.problemId
                 }
             }, function (data) {
-                Ext.MessageBox.alert("შედეგი", data.result);
+                Ext.MessageBox.alert("შედეგი", data);
                 log(data)
             }, function () {
                 log("error")
@@ -163,6 +170,7 @@ Ext.define('AA.view.coding.CodePanel', {
             me.machine = getMachine();
             me.play();
             visualisation.setReadOnly(true);
+            runTestBtn.disable();
         }
 
         function checkCodeAreaDivEmpty() {
@@ -190,6 +198,7 @@ Ext.define('AA.view.coding.CodePanel', {
         me.stop = function () {
             clearInterval(me.runningId);
             me.machine = null;
+            runTestBtn.enable();
         }
 
         me.pause = function () {
@@ -197,7 +206,7 @@ Ext.define('AA.view.coding.CodePanel', {
         }
 
         me.play = function (t) {
-            t = t ? t : 300;
+            t = t ? t : visualisation.speedSlider.getValue();
             if (!me.machine) return;
 
             visualisation.pauseBtn.enable();

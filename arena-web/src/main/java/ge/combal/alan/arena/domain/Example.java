@@ -1,27 +1,27 @@
 package ge.combal.alan.arena.domain;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by tsotne on 7/13/15.
  */
 public class Example {
-    private ArrayList<Character> in;
-    private ArrayList<Character> out;
+    private LinkedList<Character> in;
+    private LinkedList<Character> out;
 
-    public ArrayList<Character> getIn() {
+    public LinkedList<Character> getIn() {
         return in;
     }
 
-    public void setIn(ArrayList<Character> in) {
+    public void setIn(LinkedList<Character> in) {
         this.in = in;
     }
 
-    public ArrayList<Character> getOut() {
+    public LinkedList<Character> getOut() {
         return out;
     }
 
-    public void setOut(ArrayList<Character> out) {
+    public void setOut(LinkedList<Character> out) {
         this.out = out;
     }
 }

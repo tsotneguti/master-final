@@ -18,7 +18,8 @@ public class DequeTape implements Tape {
     }
 
     public DequeTape(Collection<Character> tape) {
-        right = new LinkedList<Character>(tape);
+        current = tape != null ? tape.toArray()[0].toString().charAt(0) : EMPTY_SYMBOL;
+        right = new LinkedList<Character>(((LinkedList<Character>) tape).subList(1, tape.size()));
         left = new LinkedList<Character>();
     }
 
@@ -53,7 +54,7 @@ public class DequeTape implements Tape {
     @Override
     public String toString() {
         Collection<Character> tape = getTapeAsCollection();
-        
+
         StringBuilder builder = new StringBuilder();
 
         for (Character character : tape) {
