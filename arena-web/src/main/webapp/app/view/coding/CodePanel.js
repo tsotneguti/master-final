@@ -149,7 +149,7 @@ Ext.define('AA.view.coding.CodePanel', {
                     correctCode.push(c[i].trim());
             }
 
-            log(correctCode,me.problemId)
+            log(correctCode, me.problemId)
 
             springRequest({
                 url: 'machine/eval',
@@ -159,11 +159,27 @@ Ext.define('AA.view.coding.CodePanel', {
                     problemId: me.problemId
                 }
             }, function (data) {
-                Ext.MessageBox.alert("შედეგი", data);
+                var res = Ext.create('Ext.window.Window', {
+                    title: 'შედეგი',
+                    width: 400,
+                    height: 400,
+                    modal: true,
+                    bodyPadding : 10,
+                    html: resulMessage(data)
+                });
+                res.show();
                 log(data)
             }, function () {
                 log("error")
             });
+        }
+
+        function resulMessage(data) {
+            var html = "";
+            for (var i in data) {
+                html += "<div>" + (1+ +i) + " : </div><div style='color:" + (data[i] ? "green" : "red") + ";'>" + (data[i] ? "სწორი" : "არასწორი") + "</div>";
+            }
+            return html;
         }
 
         function runTesting() {
