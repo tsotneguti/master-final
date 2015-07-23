@@ -24,6 +24,7 @@ public class UserController {
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
     public User register(@RequestBody @Valid UserModel userModel, BindingResult bindingResult){
+        System.out.println("1234--------------------------------------");
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getFieldError().toString());
         }

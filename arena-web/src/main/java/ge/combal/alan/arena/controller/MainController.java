@@ -31,38 +31,11 @@ public class MainController {
     @Autowired
     ProblemRepository problemRepository;
 
-    @RequestMapping("/")
-    public void alan(HttpServletResponse response) throws IOException {
-        response.sendRedirect("./login");
-    }
-
     @RequestMapping(value = "/problems")
     public List<Problem> getProblems(
-            @RequestBody(required = false) String problemId
-//            @PathVariable  String problemId
-    ) {
+            @RequestBody(required = false) String problemId) {
         if (problemId == null)
             return problemRepository.findAll();
         return problemRepository.findByProblemId(problemId);
     }
-
-//    @RequestMapping(value = "login", method = RequestMethod.GET)
-//    public ModelAndView login(
-//            @RequestParam(value = "error", required = false) String error,
-//            @RequestParam(value = "logout", required = false) String logout) {
-//5
-//        ModelAndView model = new ModelAndView();
-//        if (error != null) {
-//            model.addObject("error", "Invalid username and password!");
-//        }
-//
-//        if (logout != null) {
-//            model.addObject("msg", "You've been logged out successfully.");
-//        }
-//        model.setViewName("login");
-//
-//        return model;
-//
-//    }
-
 }

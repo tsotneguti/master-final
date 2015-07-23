@@ -16,5 +16,4 @@ public class MvcConfiguration {
         internalResourceViewResolver.setSuffix(".html");
         return internalResourceViewResolver;
     }
-
 }
