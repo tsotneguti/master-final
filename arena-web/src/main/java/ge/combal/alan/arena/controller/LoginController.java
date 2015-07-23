@@ -19,7 +19,7 @@ public class LoginController {
         return new ModelAndView("login");
     }
 
-    @RequestMapping("register")
+    @RequestMapping(value = "register")
     public ModelAndView register() {
         return new ModelAndView("register");
     }

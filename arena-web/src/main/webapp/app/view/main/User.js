@@ -6,16 +6,16 @@ Ext.define('AA.view.main.User', {
         var me = this;
         me.menu = [
             {
-                text: 'გამოსვლა',
-                iconCls : 'logout-icon',
-                handler: logout
-            },
-            {
                 text: 'მომხმარებლის ინფორმაცია',
-                iconCls : 'user-info-icon',
-                handler: function(){
+                iconCls: 'user-info-icon',
+                handler: function () {
                     window.location.href = "/#userInfo"
                 }
+            },
+            {
+                text: 'გამოსვლა',
+                iconCls: 'logout-icon',
+                handler: logout
             }
         ];
 

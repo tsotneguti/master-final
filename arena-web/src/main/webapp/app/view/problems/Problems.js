@@ -16,6 +16,7 @@ Ext.define('AA.view.problems.Problems', {
         var grid = Ext.create('Ext.grid.Panel', {
             store: gridStore,
             columns: [
+                {text: 'ID', dataIndex: 'problemId', width : 50},
                 {text: 'ამოცანა', dataIndex: 'name', flex: 1},
                 {text: 'სირთულე', dataIndex: 'difficulty', flex: 1}
             ],

@@ -164,6 +164,7 @@ Ext.define('AA.view.coding.CodePanel', {
                     width: 400,
                     height: 400,
                     modal: true,
+                    autoScroll : true,
                     bodyPadding : 10,
                     html: resulMessage(data)
                 });
@@ -177,7 +178,7 @@ Ext.define('AA.view.coding.CodePanel', {
         function resulMessage(data) {
             var html = "";
             for (var i in data) {
-                html += "<div>" + (1+ +i) + " : </div><div style='color:" + (data[i] ? "green" : "red") + ";'>" + (data[i] ? "სწორი" : "არასწორი") + "</div>";
+                html += "<div style='float: left'> " + (1+ +i) + " : </div><div style='padding-left:2em; color:" + (data[i] ? "green" : "red") + ";'>" + (data[i] ? "სწორი" : "არასწორი") + "</div>";
             }
             return html;
         }
@@ -260,7 +261,7 @@ Ext.define('AA.view.coding.CodePanel', {
             if (me.errorLines.length) {
                 Ext.MessageBox.show({
                     title: 'სინტაქსური შეცდომა',
-                    msg: me.errorLines,
+                    msg: +me.errorLines + 1,
                     buttons: Ext.MessageBox.OK,
                     //fn: log,
                     icon: Ext.MessageBox.ERROR

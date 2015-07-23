@@ -27,7 +27,6 @@ public class MachineController {
     TestRepository testRepository;
 
     @RequestMapping(value = "eval", method = RequestMethod.POST)
-
     public HashMap<Integer, Boolean> eval(@RequestBody Code code, HttpServletRequest request) {
 
         Test test = testRepository.findByProblemId(code.getProblemId());
