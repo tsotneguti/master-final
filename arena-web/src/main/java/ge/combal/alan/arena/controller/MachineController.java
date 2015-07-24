@@ -44,11 +44,8 @@ public class MachineController {
 
         for (int i = 0; i < test.getTests().size(); i++) {
             DequeTape tape = new DequeTape(test.getTests().get(i).getIn());
-            System.out.println(test.getTests().get(i).getIn());
             String res = service.eval(code, tape).getResult();
             String out = test.getTests().get(i).getOut().toString().substring(1, test.getTests().get(i).getOut().toString().length() - 1);
-            System.out.println(res.trim());
-            System.out.println(out.trim());
             if (res.trim().equals(out.trim())) {
                 corrects++;
                 result.put(i, true);
@@ -60,11 +57,12 @@ public class MachineController {
         SecurityUser suser = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByUsername(suser.getUsername());
 
-        Double newPoints = corrects * 100.0 / test.getTests().size() ;
+        Double newPoints = corrects * 100.0 / test.getTests().size();
 
         for (int i = 0; i < user.getPoints().size(); i++) {
-            if (code.getProblemId() == user.getPoints().get(i).getProblemId()){
-                if(user.getPoints().get(i).getPoints() < newPoints) user.getPoints().get(i).setPoints(newPoints);
+            if (code.getProblemId().equals(user.getPoints().get(i).getProblemId())) {
+                if (user.getPoints().get(i).getPoints() < newPoints)
+                    user.getPoints().get(i).setPoints(newPoints);
                 break;
             }
         }

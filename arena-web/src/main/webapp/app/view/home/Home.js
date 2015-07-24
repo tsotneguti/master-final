@@ -64,7 +64,7 @@ Ext.define('AA.view.home.Home', {
                     var points = 0;
                     data[i].solvedProblems = data[i].solvedProblems.length;
                     for (var j in data[i]["points"]) {
-                        points += data[i]["points"][i]["points"];
+                        points += data[i]["points"][j]["points"];
                     }
                     data[i]["points"] = points;
                 }
