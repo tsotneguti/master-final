@@ -48,7 +48,7 @@ Ext.define('AA.view.coding.VisualisationPanel', {
             labelAlign: 'right',
             labelSeparator: '',
             labelStyle: 'color : white !important',
-            fieldLabel: 'მ.წ.',
+            fieldLabel: 'სიჩქარე',
             width: 214,
             value: 30,
             minValue: 1,

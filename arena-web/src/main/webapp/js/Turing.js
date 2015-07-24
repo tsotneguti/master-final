@@ -16,6 +16,7 @@ Turing = function () {
             init: function (tape, position, code) {
                 var me = this;
                 if (tape) me.tape = tape;
+                me.tape.push(" ");
                 if (position) me.position = position;
                 if (code) me.code = code;
 
@@ -94,7 +95,7 @@ Turing = function () {
             },
             execI: function () {
                 var me = this;
-                if (me.commands[me.currentCmdLine].params[0] == me.tape[me.position]) {
+                if (me.commands[me.currentCmdLine].params[0] === me.tape[me.position]) {
                     me.currentCmdLine = me.notchs[me.commands[me.currentCmdLine].params[1]];
                 } else me.currentCmdLine++;
             },

@@ -28,6 +28,11 @@ public class MainController {
         return userRepository.findByUsername(user.getUsername());
     }
 
+    @RequestMapping("get-users")
+    public List<User> users() {
+        return userRepository.findAll();
+    }
+
     @Autowired
     ProblemRepository problemRepository;
 

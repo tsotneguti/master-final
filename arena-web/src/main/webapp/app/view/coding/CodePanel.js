@@ -164,8 +164,8 @@ Ext.define('AA.view.coding.CodePanel', {
                     width: 400,
                     height: 400,
                     modal: true,
-                    autoScroll : true,
-                    bodyPadding : 10,
+                    autoScroll: true,
+                    bodyPadding: 10,
                     html: resulMessage(data)
                 });
                 res.show();
@@ -178,7 +178,7 @@ Ext.define('AA.view.coding.CodePanel', {
         function resulMessage(data) {
             var html = "";
             for (var i in data) {
-                html += "<div style='float: left'> " + (1+ +i) + " : </div><div style='padding-left:2em; color:" + (data[i] ? "green" : "red") + ";'>" + (data[i] ? "სწორი" : "არასწორი") + "</div>";
+                html += "<div style='float: left'> " + (1 + +i) + " : </div><div style='padding-left:2em; color:" + (data[i] ? "green" : "red") + ";'>" + (data[i] ? "სწორი" : "არასწორი") + "</div>";
             }
             return html;
         }
@@ -232,11 +232,12 @@ Ext.define('AA.view.coding.CodePanel', {
             me.runningId = setInterval(function () {
                 if (!me.machine.nextStep()) {
                     clearInterval(me.runningId);
+                    Ext.MessageBox.alert("შედეგი", "დასრულდა");
                 }
                 me.currentLine = codeArea.el.dom.childNodes[me.machine.lineNumberTotal[me.machine.currentCmdLine]];
                 highlightCurrentLine();
                 updateState();
-            }, t);
+            }, t * 20);
         }
 
         function getMachine() {
