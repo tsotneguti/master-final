@@ -15,7 +15,7 @@ import java.util.Collections;
 
 @Configuration
 @EnableMongoRepositories(basePackages = {"ge.combal.alan.arena.security", "ge.combal.alan.arena.repository"})
-@PropertySource("file:${user.home}/alan/alan.properties")
+@PropertySource("file:${user.home}/.alan/alan.properties")
 public class MongoConfiguration extends AbstractMongoConfiguration {
 
     @Autowired

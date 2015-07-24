@@ -15,7 +15,6 @@ import javax.validation.Valid;
 /**
  * Created by nati on 03.07.2015.
  */
-@RequestMapping("user")
 @RestController
 public class UserController {
 
@@ -23,7 +22,7 @@ public class UserController {
     UserService service;
 
     @RequestMapping(value = "register",method = RequestMethod.POST)
-    public User register(@RequestBody @Valid UserModel userModel, BindingResult bindingResult){
+    public User register(@RequestBody UserModel userModel, BindingResult bindingResult){
         System.out.println("1234--------------------------------------");
         if(bindingResult.hasErrors()){
             throw new RuntimeException(bindingResult.getFieldError().toString());

@@ -1,3 +1,10 @@
+.logo {
+    text-shadow: 1px 4px 2px rgb(21, 127, 204), 0 0 1em rgb(21, 127, 204), 0 0 0.2em black;
+    color: white;
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
 
 body {
     background-image: url("/images/binary-code.jpg");
@@ -31,7 +38,7 @@ body {
     position: relative;
 }
 
-.login-card input[type=text], input[type=password] {
+.login-card input[type=text], input[type=password], input[type=date], input[type=email] {
     height: 44px;
     font-size: 16px;
     width: 100%;
@@ -45,7 +52,7 @@ body {
     box-sizing: border-box;
 }
 
-.login-card input[type=text]:hover, input[type=password]:hover {
+.login-card input[type=text]:hover, input[type=password]:hover, input[type=date]:hover, input[type=email]:hover {
     border: 1px solid #b9b9b9;
     border-top: 1px solid #a0a0a0;
     -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);

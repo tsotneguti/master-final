@@ -11,13 +11,14 @@
 
 <div class="login-card">
     <!--<h1>რეგისტრაცია</h1><br>-->
-    <form th:action="@{/user/register}" method="post">
+    <form th:action="@{/register}" method="post">
+        <div class="logo">Alan Turing</div>
         <input type="text" name="firstName" placeholder="სახელი">
         <input type="text" name="lastName" placeholder="გვარი">
-        <input type="text" name="username" placeholder="მომხმარებელი">
+        <input type="text" name="username" placeholder="მომხმარებლი">
         <input type="password" name="password" placeholder="პაროლი">
-        <input type="text" name="rePassword" placeholder="გაიმეორეთ პაროლი">
-        <input type="text" name="email" placeholder="e-mail">
+        <!--<input type="password" name="rePassword" placeholder="გაიმეორეთ პაროლი">-->
+        <input type="email" name="email" placeholder="e-mail">
         <input type="submit" name="register" class="login login-submit" value="რეგისტრაცია">
     </form>
 
